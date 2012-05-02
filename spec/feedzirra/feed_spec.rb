@@ -190,40 +190,48 @@ describe Feedzirra::Feed do
       end
 
       it "should set user agent if it's passed as an option" do
+        @curl_easy.should_receive(:perform)
         Feedzirra::Feed.fetch_raw(@paul_feed[:url], :user_agent => 'Custom Useragent')
         @curl.headers['User-Agent'].should == 'Custom Useragent'
       end
 
       it "should set user agent to default if it's not passed as an option" do
+        @curl_easy.should_receive(:perform)
         Feedzirra::Feed.fetch_raw(@paul_feed[:url])
         @curl.headers['User-Agent'].should == Feedzirra::Feed::USER_AGENT
       end
       
       it "should set if modified since as an option if passed" do
+        @curl_easy.should_receive(:perform)
         Feedzirra::Feed.fetch_raw(@paul_feed[:url], :if_modified_since => Time.parse("Wed, 28 Jan 2009 04:10:32 GMT"))
         @curl.headers["If-Modified-Since"].should == 'Wed, 28 Jan 2009 04:10:32 GMT'
       end
 
       it "should set if none match as an option if passed" do
+        @curl_easy.should_receive(:perform)
         Feedzirra::Feed.fetch_raw(@paul_feed[:url], :if_none_match => 'ziEyTl4q9GH04BR4jgkImd0GvSE')
         @curl.headers["If-None-Match"].should == 'ziEyTl4q9GH04BR4jgkImd0GvSE'
       end
       
       it 'should set userpwd for http basic authentication if :http_authentication is passed' do
+        @curl_easy.should_receive(:perform)
         @curl.should_receive(:userpwd=).with('username:password')
         Feedzirra::Feed.fetch_raw(@paul_feed[:url], :http_authentication => ['username', 'password'])
       end
 
       it 'should set accepted encodings' do
+        @curl_easy.should_receive(:perform)
         Feedzirra::Feed.fetch_raw(@paul_feed[:url], :compress => true)
         @curl.headers["Accept-encoding"].should == 'gzip, deflate'
       end
 
       it "should return raw xml" do
+        @curl_easy.should_receive(:perform)
         Feedzirra::Feed.fetch_raw(@paul_feed[:url]).should =~ /^#{Regexp.escape('<?xml version="1.0" encoding="UTF-8"?>')}/
       end
 
       it "should take multiple feed urls and return a hash of urls and response xml" do
+        @curl_easy.should_receive(:perform).twice
         multi = stub('curl_multi', :add => true, :perform => true)
         Curl::Multi.stub!(:new).and_return(multi)
         
@@ -247,6 +255,7 @@ describe Feedzirra::Feed do
       end
 
       it "should always return a hash when passed an array" do
+        @curl_easy.should_receive(:perform)
         results = Feedzirra::Feed.fetch_raw([@paul_feed[:url]])
         results.class.should == Hash
       end
