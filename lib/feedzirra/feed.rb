@@ -1,5 +1,21 @@
 module Feedzirra
   class NoParserAvailable < StandardError; end
+
+  class UrlBatch
+    def initialize
+      @urls = []
+    end
+
+    def add(url)
+      @urls << url
+    end
+
+    def perform
+      @urls.each do |url|
+        url.perform
+      end
+    end
+  end
   
   class Feed
     USER_AGENT = "feedzirra http://github.com/pauldix/feedzirra/tree/master"
@@ -150,7 +166,7 @@ module Feedzirra
     # A Hash if multiple URL's are passed. The key will be the URL, and the value the XML.
     def self.fetch_raw(urls, options = {})
       url_queue = [*urls]
-      multi = Curl::Multi.new
+      multi = UrlBatch.new
       responses = {}
       url_queue.each do |url|
         easy = Curl::Easy.new(url) do |curl|
@@ -189,7 +205,7 @@ module Feedzirra
     # A Hash if multiple URL's are passed. The key will be the URL, and the value the Feed object.
     def self.fetch_and_parse(urls, options = {})
       url_queue = [*urls]
-      multi = Curl::Multi.new
+      multi = UrlBatch.new
       responses = {}
       
       # I broke these down so I would only try to do 30 simultaneously because
@@ -241,7 +257,7 @@ module Feedzirra
     # A Hash if multiple Feeds are passed. The key will be the URL, and the value the updated Feed object.
     def self.update(feeds, options = {})
       feed_queue = [*feeds]
-      multi = Curl::Multi.new
+      multi = UrlBatch.new
       responses = {}
       
       feed_queue.slice!(0, 30).each do |feed|
