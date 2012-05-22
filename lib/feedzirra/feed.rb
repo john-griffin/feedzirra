@@ -1,6 +1,4 @@
 module Feedzirra
-  class NoParserAvailable < StandardError; end
-
   class UrlBatch
     def initialize
       @urls = []

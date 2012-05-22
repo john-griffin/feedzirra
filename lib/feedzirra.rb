@@ -3,11 +3,7 @@ require 'curb'
 require 'sax-machine'
 require 'loofah'
 require 'uri'
-
-require 'active_support/basic_object'
-require 'active_support/core_ext/module'
-require 'active_support/core_ext/object'
-require 'active_support/time'
+require 'gorillib/some'
 
 require 'feedzirra/core_ext'
 
@@ -16,4 +12,6 @@ module Feedzirra
   autoload :FeedUtilities,      'feedzirra/feed_utilities'
   autoload :Feed,               'feedzirra/feed'
   autoload :Parser,             'feedzirra/parser'
+  
+  class NoParserAvailable < StandardError; end
 end
