@@ -1,3 +1,11 @@
+begin
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/spec/"
+  end
+rescue LoadError
+end
+
 require File.expand_path(File.dirname(__FILE__) + '/../lib/feedzirra')
 
 def load_sample(filename)
@@ -64,11 +72,4 @@ RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
-end
-# http://eigenclass.org/hiki/Changes+in+Ruby+1.9#l156
-# Default Time.to_s changed in 1.9, monkeypatching it back
-class Time
-  def to_s
-    strftime("%a %b %d %H:%M:%S %Z %Y")
-  end
 end
