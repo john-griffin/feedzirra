@@ -1,3 +1,9 @@
+# HEAD
+* Remove gorillib dependency [[#113](https://github.com/pauldix/feedzirra/pull/113)].
+
+# 0.2.0.rc2
+* Bump sax-machine to `v0.2.0.rc1`, fixes encoding issues [[#76](https://github.com/pauldix/feedzirra/issues/76)].
+
 # 0.2.0.rc1
 * Remove ActiveSupport dependency
   * No longer tethered to any version of Rails!
