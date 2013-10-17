@@ -1,3 +1,9 @@
+**This is a fork of Feedzirra**
+
+I maintain this fork for compatibility with WebMock/VCR. Feedzirra uses Curl::Multi which WebMock does not support. This fork makes all requests via Curl::Easy which is supported by WebMock. This sacrifices parallel performance for testability. I tend to use worker queues (such as Sidekiq) for processing so the lack of parallel requests is a trade off I'm willing to make.
+
+**Normal README below**
+
 # Feedzirra [![Build Status](https://secure.travis-ci.org/pauldix/feedzirra.png)](http://travis-ci.org/pauldix/feedzirra)
 
 I'd like feedback on the api and any bugs encountered on feeds in the wild. I've set up a [google group here](http://groups.google.com/group/feedzirra).
