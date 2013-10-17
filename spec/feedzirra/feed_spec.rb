@@ -231,10 +231,9 @@ describe Feedzirra::Feed do
       end
 
       it "should take multiple feed urls and return a hash of urls and response xml" do
-        @curl_easy.should_receive(:perform).twice
-        multi = stub('curl_multi', :add => true, :perform => true)
-        Curl::Multi.stub!(:new).and_return(multi)
-        
+        multi = stub('url_batch', :add => true, :perform => true)
+        Feedzirra::UrlBatch.stub!(:new).and_return(multi)
+
         paul_response = stub('paul_response', :header_str => '', :body_str => @paul_feed[:xml] )
         trotter_response = stub('trotter_response', :header_str => '', :body_str => @trotter_feed[:xml] )
 
